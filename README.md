@@ -50,7 +50,7 @@ At first, I checked the IP address for both machines, and then I tried to ping e
 
 <img width="1917" height="1198" alt="Screenshot 2026-06-09 165810" src="https://github.com/user-attachments/assets/c4c8fd71-aa6b-434f-bc23-5446acca7a38" />
 
-
+### Splunk Enterprise Installation on KALI Machine:
 
 
 
