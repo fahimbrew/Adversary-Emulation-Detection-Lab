@@ -21,3 +21,8 @@ Splunk Enterprise runs here. It receives logs from Windows and lets you search/d
 Atomic Red Team = Attack simulator
 
 It runs known MITRE ATT&CK technique tests, such as scheduled task creation, MSHTA execution, LSASS access, PowerShell download, and registry modification.
+
+### Kali Configuration:
+<img width="1918" height="1198" alt="Screenshot 2026-06-09 152630" src="https://github.com/user-attachments/assets/e819c4a4-4ade-470d-afa3-bec4de66b05e" />
+
+I have assigned 4 GB RAM, 80.1 GB SSD, and 4 cores in the Kali Machine
