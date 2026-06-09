@@ -52,6 +52,31 @@ At first, I checked the IP address for both machines, and then I tried to ping e
 
 ### Splunk Enterprise Installation on KALI Machine:
 
+#### Step-1
+
+First, we need to download Splunk Enterprise to the Kali Machine using the wget -O command.
+<img width="1918" height="1198" alt="Splunk Enterprise Download" src="https://github.com/user-attachments/assets/c58476ce-b0b3-4c26-8edf-a1318d73b9af" />
+
+#### Step-2
+
+After that, we need to install it on our Kali Machine using the dpkg -i command.
+<img width="1918" height="1198" alt="installing Splunk on Kali" src="https://github.com/user-attachments/assets/9301ceec-84ad-47b4-8a69-73c4d2887698" />
+
+#### Step-3
+
+Then we need to start Splunk Enterprise on our machine using sudo /opt/splunk/bin/splunk start --accept-license --run-as-root command.
+<img width="1917" height="1197" alt="starting splunk on kali" src="https://github.com/user-attachments/assets/8deae633-f6a8-48b2-98e7-7e62d5795c90" />
+
+#### Step-4
+
+Open Splunk Enterprise on the browser.
+<img width="1917" height="1197" alt="Splunk opening on browser" src="https://github.com/user-attachments/assets/655b4ebd-36fc-42be-9085-860c8437e10f" />
+<img width="1917" height="1197" alt="Splunk Dashboard" src="https://github.com/user-attachments/assets/f73345f8-9f57-42ea-a60f-d545009cf745" />
+
+#### Step-5
+
+Set the receiving port to 9997.
+<img width="1917" height="1195" alt="setting recieving port on Splunk Enterprise" src="https://github.com/user-attachments/assets/fcfce050-c1dd-4cc0-a413-c6cfd863753a" />
 
 
 
