@@ -80,7 +80,22 @@ Set the receiving port to 9997.
 
 
 
+### Sysmon Installation on Windows Server 2019
+
+#### Step-1
+
+At first, we need to download Sysmon and the Sysmon config file on our machine by using PowerShell.
+
+<img width="1915" height="1191" alt="Sysmon download and unzipped on server" src="https://github.com/user-attachments/assets/174dc969-86d2-419c-b3d1-ebb48f1d4682" />
+<img width="1917" height="1197" alt="download sysmon configuration file" src="https://github.com/user-attachments/assets/2de282a9-d626-42c0-ae60-1c632f86fdc8" />
 
 
+#### Step-2
+After that, we need to install it.
+<img width="1917" height="1195" alt="Installed Sysmon" src="https://github.com/user-attachments/assets/6457fe32-443c-4177-a789-263cdef94e87" />
 
+#### Step-3
+Check if the Sysmon is running or not.
+<img width="1917" height="1197" alt="Check service if sysmon is running or not" src="https://github.com/user-attachments/assets/0aab7662-571b-4ba3-a447-2744cad2ed2a" />
+<img width="1917" height="1197" alt="Sysmon checking on Event viewer if running or not" src="https://github.com/user-attachments/assets/d273751b-bc7a-45f4-bcaf-4103816dd7d0" />
 
