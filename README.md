@@ -25,4 +25,10 @@ It runs known MITRE ATT&CK technique tests, such as scheduled task creation, MSH
 ### Kali Configuration:
 <img width="1918" height="1198" alt="Screenshot 2026-06-09 152630" src="https://github.com/user-attachments/assets/e819c4a4-4ade-470d-afa3-bec4de66b05e" />
 
-I have assigned 4 GB RAM, 80.1 GB SSD, and 4 cores in the Kali Machine
+I have assigned 4 GB RAM, 80.1 GB SSD, and a 4-core processor in the Kali Machine.
+
+### Windows 2019 Server Configuration:
+<img width="1918" height="1198" alt="Screenshot 2026-06-09 153553" src="https://github.com/user-attachments/assets/022c7877-72ae-4b89-93c0-d5c5796de399" />
+
+I have assigned 4 GB RAM, 20 GB SSD, and a 2-core processor in the Windows Server Machine.
+
