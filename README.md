@@ -221,6 +221,21 @@ Invoke-AtomicTest T1003.001 -TestNumbers 1
 <img width="1917" height="1197" alt="test 3 1" src="https://github.com/user-attachments/assets/3748ccc2-95b4-492e-8f24-d85fa200e944" />
 <img width="1917" height="1197" alt="test 3 2" src="https://github.com/user-attachments/assets/66d89efd-fec6-45a9-bad5-310c1ce1e9b7" />
 
+### Attack 4: T1059.001 - PowerShell
+
+For the fourth attack, I selected Atomic Red Team test number 6 under `T1059.001`. This test uses PowerShell with an MSXML COM object. Attackers commonly abuse PowerShell because it is built into Windows and can be used to execute commands, download content, or run scripts.
+
+PowerShell is a trusted Windows tool, so malicious PowerShell activity can sometimes blend in with normal administrative activity. That is why command-line logging and Sysmon process creation logs are important for detecting this technique.
+
+PowerShell Command:
+
+```powershell
+Invoke-AtomicTest T1059.001 -ShowDetailsBrief
+Invoke-AtomicTest T1059.001 -TestNumbers 6 -GetPrereqs
+Invoke-AtomicTest T1059.001 -TestNumbers 6
+```
+
+<img width="1917" height="1197" alt="Test 4" src="https://github.com/user-attachments/assets/02c56ca7-3aaa-49a3-a192-569fac28622a" />
 
 
 ## Blue Team
@@ -331,6 +346,63 @@ Sysmon Event ID 10 is also very useful for LSASS dumping detection because it ca
 The Splunk result showed LSASS dumping activity from the Windows Server. The output included the event time, host name, Sysmon Event ID, process name, and command line. The command line showed procdump.exe being used to dump lsass.exe, confirming that the blue team was able to detect the T1003.001 credential access technique.
 
 <img width="1917" height="1197" alt="detection 3 on trial" src="https://github.com/user-attachments/assets/4a26caea-fa33-428f-afcc-1c1a92eb165c" />
+
+
+### Detection 4: T1059.001 (Execution) | PowerShell
+
+After executing the Atomic Red Team test for `T1059.001`, I searched Splunk for suspicious PowerShell execution. The goal of this detection was to identify PowerShell command-line activity involving MSXML, remote content retrieval, and script execution.
+
+This test used PowerShell with the `Msxml2.ServerXmlHttp` COM object to request remote content from GitHub and execute the response using `IEX`. This behavior is suspicious because attackers commonly use PowerShell to download and execute scripts from remote sources.
+
+#### SPL Query
+
+```spl
+index=win source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
+| rex field=_raw "<EventID[^>]*>(?<EventCode>\d+)</EventID>"
+| rex field=_raw "<Data Name='UtcTime'>(?<UtcTime>[^<]+)</Data>"
+| rex field=_raw "<Data Name='Image'>(?<ProcessName>[^<]+)</Data>"
+| rex field=_raw "<Data Name='CommandLine'>(?<CommandLine>[^<]+)</Data>"
+| eval cmd=lower(coalesce(CommandLine,"")), proc=lower(coalesce(ProcessName,""))
+| where EventCode="1" AND (like(proc,"%powershell%") OR like(cmd,"%powershell%"))
+| where like(cmd,"%msxml%") OR like(cmd,"%xmlhttp%") OR like(cmd,"%serverxmlhttp%") OR like(cmd,"%iex%") OR like(cmd,"%invoke-expression%") OR like(cmd,"%invoke-webrequest%") OR like(cmd,"%http%")
+| table _time UtcTime host EventCode ProcessName CommandLine
+```
+
+#### Detection Explanation
+
+The Splunk query searched the `win` index, where Windows Server Sysmon logs were forwarded. The query extracted important fields from the raw XML Sysmon logs, including `EventCode`, `UtcTime`, `ProcessName`, and `CommandLine`.
+
+The detection result showed PowerShell execution with suspicious command-line indicators such as `Msxml2.ServerXmlHttp`, `GET`, a GitHub URL, and `IEX`. This indicates that PowerShell was used to retrieve remote content and execute it, which matches the behavior of the Atomic Red Team test for `T1059.001`.
+
+This helped prove the required detection evidence: execution time, process name, and command line.
+
+#### Most Helpful Sysmon Event ID
+
+```text
+Sysmon Event ID 1 - Process Creation
+```
+
+Sysmon Event ID 1 was the most helpful event because it captured the PowerShell process and the full command line. The command line clearly showed PowerShell using `Msxml2.ServerXmlHttp` to request remote content and execute it with `IEX`.
+
+```text
+Sysmon Event ID 3 - Network Connection
+```
+
+Sysmon Event ID 3 can also be useful for this technique because it can show outbound network connections made by PowerShell. However, in this detection screenshot, the clearest evidence came from Event ID 1 process creation logs.
+
+#### Result
+
+The Splunk result showed PowerShell-related activity from the Windows Server. The output included event time, host name, Sysmon Event ID, process name, and command line. The command line showed PowerShell using `Msxml2.ServerXmlHttp`, a remote GitHub URL, and `IEX`, confirming that the blue team was able to detect the `T1059.001` execution technique using Sysmon logs in Splunk.
+
+<img width="1917" height="1197" alt="detection 4 on trial 2" src="https://github.com/user-attachments/assets/72cb0f54-1c9c-4806-9abb-8802a6654555" />
+
+
+
+
+
+
+
+
 
 
 
