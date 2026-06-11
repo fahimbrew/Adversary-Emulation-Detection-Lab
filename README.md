@@ -151,6 +151,9 @@ index=main (Sysmon OR notepad.exe OR calc.exe OR whoami OR ipconfig)
 #### Now I will install the Splunk Add-on for Sysmon.
 <img width="1917" height="1197" alt="Splunk Add-on for Sysmon install" src="https://github.com/user-attachments/assets/0f7e6576-c2b8-4527-9bd2-147116e8bc4f" />
 
+##### I am now creating a new index on Splunk Enterprise named 'win' and from the server side, I will update the inputs.conf file.
+<img width="1917" height="1192" alt="creating new index" src="https://github.com/user-attachments/assets/f59a7b63-4173-44e4-a4f8-92586869af59" />
+<img width="1917" height="1197" alt="creating new index input on server" src="https://github.com/user-attachments/assets/79c11aaf-5f3d-416d-95df-235d7454513b" />
 
 
 
