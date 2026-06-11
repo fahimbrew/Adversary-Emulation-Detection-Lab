@@ -317,6 +317,17 @@ The Splunk result showed scheduled task-related activity from the Windows Server
 
 After executing the Atomic Red Team test for T1218.005, I searched Splunk for suspicious MSHTA execution. The detection focused on mshta.exe, HTA file execution, and script-related command-line activity.
 
+```spl
+index=win source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
+| rex field=_raw "<EventID[^>]*>(?<EventCode>\d+)</EventID>"
+| rex field=_raw "<Data Name='UtcTime'>(?<UtcTime>[^<]+)</Data>"
+| rex field=_raw "<Data Name='Image'>(?<ProcessName>[^<]+)</Data>"
+| rex field=_raw "<Data Name='CommandLine'>(?<CommandLine>[^<]+)</Data>"
+| eval cmd=lower(coalesce(CommandLine,"")), proc=lower(coalesce(ProcessName,""))
+| where EventCode="1" AND (like(proc,"%mshta.exe%") OR like(cmd,"%mshta%") OR like(cmd,"%.hta%") OR like(cmd,"%javascript:%") OR like(cmd,"%vbscript:%"))
+| table _time UtcTime host EventCode ProcessName CommandLine
+```
+
 #### Most Helpful Sysmon Event ID
 Sysmon Event ID 1 - Process Creation
 
@@ -496,6 +507,43 @@ Note: Test numbers 38 and 51 completed successfully with exit code `0`. Test num
 
 
 
+---
+
+## Key Skills Demonstrated
+
+This project demonstrates practical hands-on experience in both red team emulation and blue team detection engineering. The lab covered the complete workflow of building a small SOC-style detection environment, generating realistic attacker-like activity, collecting endpoint telemetry, and writing SPL queries to identify suspicious behavior.
+
+Key skills demonstrated in this project include:
+
+* Windows Server 2019 security monitoring
+* Kali Linux based Splunk Enterprise deployment
+* Splunk Universal Forwarder configuration
+* Sysmon installation and event collection
+* Windows Event Log forwarding
+* Custom Splunk index creation
+* Atomic Red Team adversary emulation
+* MITRE ATT&CK technique mapping
+* SPL query writing and field extraction
+* Detection of process creation, process access, registry modification, and suspicious command-line activity
+* Troubleshooting real lab issues such as network connectivity, Defender blocking, missing dependencies, and incorrect file formats
+
+---
+
+## Conclusion
+
+In this project, I successfully built an end-to-end adversary emulation and detection lab using Windows Server 2019, Kali Linux, Splunk Enterprise, Sysmon, Splunk Universal Forwarder, and Atomic Red Team. The Windows Server acted as the victim endpoint, while Kali Linux hosted Splunk Enterprise as the SIEM platform. Sysmon was used to collect detailed endpoint telemetry, and the Splunk Universal Forwarder was configured to send Windows and Sysmon logs into a dedicated Splunk index named `win`.
+
+After completing the logging pipeline, I used Atomic Red Team to emulate five MITRE ATT&CK techniques in a controlled lab environment. These techniques included scheduled task persistence, MSHTA abuse, LSASS dumping, PowerShell execution, and registry modification. Each attack was executed on the Windows Server and then investigated from the blue team side using Splunk.
+
+The detection phase focused on identifying real technical behavior rather than simply searching for the word “Atomic.” For each attack, I wrote SPL queries that extracted important fields such as event time, process name, command line, registry path, source process, target process, and access rights. This helped prove that the attacks were visible in the collected telemetry and could be investigated by a security analyst.
+
+The most useful Sysmon events in this lab were Event ID 1 for process creation, Event ID 10 for process access, Event ID 13 for registry value modification, and Event ID 3 for network connection activity. These events provided strong visibility into attacker-like behavior such as `schtasks.exe` execution, `mshta.exe` abuse, `procdump.exe` dumping `lsass.exe`, PowerShell downloading and executing remote content, and registry changes related to Windows Defender settings.
+
+This project improved my understanding of how attackers use legitimate Windows tools for persistence, defense evasion, credential access, execution, and registry modification. More importantly, it showed how defenders can use endpoint logs, Sysmon telemetry, and Splunk SPL queries to detect those behaviors.
+
+From a SOC analyst and detection engineering perspective, this lab demonstrates my ability to build a detection environment, troubleshoot log ingestion problems, emulate adversary behavior safely, investigate endpoint activity, and create meaningful detections mapped to MITRE ATT&CK. It also reflects practical skills that are directly relevant to security monitoring, threat hunting, incident response, and blue team operations.
+
+Overall, this lab helped me connect red team activity with blue team visibility. It shows that effective detection is not only about collecting logs, but also about understanding attacker behavior, selecting the right telemetry, writing accurate queries, and clearly explaining the evidence found during investigation.
 
 
 
