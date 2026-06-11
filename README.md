@@ -99,3 +99,8 @@ Check if the Sysmon is running or not.
 <img width="1917" height="1197" alt="Check service if sysmon is running or not" src="https://github.com/user-attachments/assets/0aab7662-571b-4ba3-a447-2744cad2ed2a" />
 <img width="1917" height="1197" alt="Sysmon checking on Event viewer if running or not" src="https://github.com/user-attachments/assets/d273751b-bc7a-45f4-bcaf-4103816dd7d0" />
 
+### Splunk Universal Forwarder Installation:
+
+##### At first, we have to again check the IP address and make sure that the Splunk Enterprise port is accessible from the Windows server. As I restarted my main machine, my IP address of Kali got changed to 192.168.214.130, and I have also checked from the Windows server if the port is accessible or not.
+<img width="1917" height="1197" alt="port checking" src="https://github.com/user-attachments/assets/d6ed5981-884a-4ffa-8f95-597be786f22c" />
+
