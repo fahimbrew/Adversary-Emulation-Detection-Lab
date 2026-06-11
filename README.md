@@ -238,6 +238,32 @@ Invoke-AtomicTest T1059.001 -TestNumbers 6
 <img width="1917" height="1197" alt="Test 4" src="https://github.com/user-attachments/assets/02c56ca7-3aaa-49a3-a192-569fac28622a" />
 
 
+### Attack 5: T1112 - Registry Modification
+
+For the fifth attack, I selected multiple Atomic Red Team tests under `T1112`: test numbers `38`, `51`, and `56`. These tests simulate registry modification and Windows Defender-related configuration changes. Attackers may modify registry keys or security settings to weaken protection, hide activity, or perform defense evasion.
+
+The selected Atomic tests were:
+
+* `T1112-38` - Suppress Windows Defender Notifications
+* `T1112-51` - Disable Windows Defender Notification
+* `T1112-56` - Tamper Windows Defender Protection
+
+PowerShell Command:
+
+```powershell
+Invoke-AtomicTest T1112 -TestNumbers 38,51,56 -GetPrereqs
+Invoke-AtomicTest T1112 -TestNumbers 38,51,56
+```
+
+During execution, test numbers `38` and `51` completed successfully with exit code `0`. Test number `56` returned an `Access is denied` message with exit code `1`. This means the tamper protection test was attempted but was blocked by system permissions or protection restrictions. Even though test `56` did not fully completed, it still generated useful activity for investigation because it showed an attempted security-related configuration change.
+
+<img width="1917" height="1197" alt="Attack 5 1" src="https://github.com/user-attachments/assets/010e1433-4cc0-47c6-bb97-8b7b11d49bc4" />
+<img width="1917" height="1197" alt="Attack 5 2" src="https://github.com/user-attachments/assets/4ec938cd-7cef-4328-a83a-491633168b3f" />
+<img width="1917" height="1197" alt="Attack 5 3 trial" src="https://github.com/user-attachments/assets/b59ae697-c6f6-4b1f-988b-f6f815a8f00b" />
+
+
+
+
 ## Blue Team
 
 ### Detection 1: T1053.005 (Persistence) | Scheduled Task
