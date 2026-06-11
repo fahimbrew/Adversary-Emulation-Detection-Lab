@@ -128,6 +128,8 @@ Check if the Sysmon is running or not.
 <img width="1917" height="1197" alt="forwarder status" src="https://github.com/user-attachments/assets/0c29248f-e997-4a7b-a485-2ecdd4d04148" />
 
 
+#### Generate Test Sysmon Logs
+<img width="1917" height="1197" alt="testing if sysmon can capture them or not" src="https://github.com/user-attachments/assets/0a95018b-0c02-4222-a81e-526a99425733" />
 
 
 
