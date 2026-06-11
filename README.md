@@ -132,6 +132,8 @@ Check if the Sysmon is running or not.
 <img width="1917" height="1197" alt="testing if sysmon can capture them or not" src="https://github.com/user-attachments/assets/0a95018b-0c02-4222-a81e-526a99425733" />
 
 
+##### While I was trying to see the logs from Splunk Enterprise, I triggered a problem and couldn't see any events, then I figured out one major problem that my inputs.conf file was actually in a text format, so I fixed it.
+<img width="1917" height="1197" alt="triggered problem 1" src="https://github.com/user-attachments/assets/d40066fc-f8e3-4860-8c66-e3c4914e3471" />
 
 
 
