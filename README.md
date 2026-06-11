@@ -178,8 +178,7 @@ During Atomic Red Team setup, Windows Defender detected some Atomic Red Team com
 
 ## Red Team Attack
 
-### (1) T1053.005 (Persistence) | Scheduled Task: Create a task that runs a hidden script
-every minute.
+### (1) T1053.005 (Persistence) | Scheduled Task: Create a task that runs a hidden script every minute.
 
 
 
