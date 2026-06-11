@@ -135,8 +135,15 @@ Check if the Sysmon is running or not.
 ##### While I was trying to see the logs from Splunk Enterprise, I triggered a problem and couldn't see any events, then I figured out one major problem that my inputs.conf file was actually in a text format, so I fixed it.
 <img width="1917" height="1197" alt="triggered problem 1" src="https://github.com/user-attachments/assets/d40066fc-f8e3-4860-8c66-e3c4914e3471" />
 
+#### Verifying Windows Sysmon Logs in Splunk
 
+After configuring the Splunk Universal Forwarder, I verified that Windows Server logs were successfully received by Splunk Enterprise running on Kali. First, I searched the `main` index and confirmed that logs were coming from the Windows Server host.
 
+SPL Query:
+
+```spl
+index=main
+| stats count by host source sourcetype
 
 
 
