@@ -1,4 +1,3 @@
-<img width="1917" height="1197" alt="nice two" src="https://github.com/user-attachments/assets/beee634f-11bb-458b-be6b-1d0ca4d649ee" />
 # Adversary-Emulation-Detection-Lab
 ## The Infrastructure Setup
 ### Lab Network Diagram :
