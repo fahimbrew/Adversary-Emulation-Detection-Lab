@@ -195,8 +195,14 @@ Invoke-AtomicTest T1053.005 -TestNumbers 8
 
 ### Attack 2: T1218.005 - MSHTA
 
-For the second attack, I selected the Atomic Red Team test number 3 under T1218.005. This technique abuses mshta.exe, which is a legitimate Microsoft-signed Windows binary used to execute HTML Application files. Attackers can abuse MSHTA to execute malicious scripts or remote .hta files while bypassing some application control mechanisms.
+For the second attack, I selected Atomic Red Team test number 3 under T1218.005. This test is named Mshta Executes Remote HTML Application (HTA). The purpose of this test is to abuse mshta.exe, a legitimate Microsoft-signed Windows binary, to execute a remote HTA file. Attackers may use this technique to execute malicious script content while bypassing some application control or security restrictions.
 
+PowerShell Command:
+
+```powershell
+Invoke-AtomicTest T1218.005 -TestNumbers 3 -GetPrereqs
+Invoke-AtomicTest T1218.005 -TestNumbers 3
+```
 <img width="1917" height="1197" alt="Test 2" src="https://github.com/user-attachments/assets/6396729e-77db-40db-8998-f2ca10d9c9ea" />
 
 
@@ -250,6 +256,20 @@ The Splunk result showed scheduled task-related activity from the Windows Server
 <img width="1917" height="1197" alt="Detection 1" src="https://github.com/user-attachments/assets/6931e232-686b-4566-8ae6-faef12db3664" />
 
 
+### Detection 2: T1218.005 (Defense Evasion) | MSHTA
+
+After executing the Atomic Red Team test for T1218.005, I searched Splunk for suspicious MSHTA execution. The detection focused on mshta.exe, HTA file execution, and script-related command-line activity.
+
+#### Most Helpful Sysmon Event ID
+Sysmon Event ID 1 - Process Creation
+
+Sysmon Event ID 1 was most helpful because it records newly created processes and their full command lines. This allowed me to identify mshta.exe execution and confirm that the Atomic Red Team test generated observable Windows activity.
+
+#### Result
+
+The Splunk result showed MSHTA-related activity from the Windows Server. The output included time, host, Event ID, process name, and command line, confirming that the blue team was able to detect the T1218.005 defense evasion technique.
+
+<img width="1917" height="1197" alt="Detection 2" src="https://github.com/user-attachments/assets/65818bf7-ffbc-4957-83f6-2df3dbf294bf" />
 
 
 
