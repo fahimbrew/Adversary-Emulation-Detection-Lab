@@ -162,6 +162,20 @@ index=main (Sysmon OR notepad.exe OR calc.exe OR whoami OR ipconfig)
 
 ### Invoke-AtomicRedTeam Installation
 
+#### Windows Defender Interference
+
+During Atomic Red Team setup, Windows Defender detected some Atomic Red Team components as suspicious because the framework contains attack-simulation scripts. Since this was an isolated lab VM, I added exclusions for the Atomic Red Team folder and temporarily disabled real-time protection only during installation/testing.
+
+
+<img width="1917" height="1197" alt="invokeredteam 1" src="https://github.com/user-attachments/assets/4cb4af56-f454-4961-b44c-4f5843aed327" />
+<img width="1917" height="1197" alt="invokeredteam 2" src="https://github.com/user-attachments/assets/8b90869c-1f9a-42b8-8594-011ca79e1956" />
+<img width="1917" height="1197" alt="invokeredteam 3" src="https://github.com/user-attachments/assets/c176f404-65fe-40d6-b9f3-4cc5b321f982" />
+<img width="1917" height="1197" alt="invokeredteam 4" src="https://github.com/user-attachments/assets/b6b369b0-a5ad-4b76-9eae-b0827c37c325" />
+<img width="1917" height="1197" alt="invokeredteam 5 test" src="https://github.com/user-attachments/assets/33ef065c-f24a-4415-9ee3-d3d304f59a08" />
+
+##### Finally, I tested if it is working or not
+
+
 
 
 
