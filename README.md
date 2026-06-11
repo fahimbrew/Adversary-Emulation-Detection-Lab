@@ -206,6 +206,22 @@ Invoke-AtomicTest T1218.005 -TestNumbers 3
 <img width="1917" height="1197" alt="Test 2" src="https://github.com/user-attachments/assets/6396729e-77db-40db-8998-f2ca10d9c9ea" />
 
 
+### Attack 3: T1003.001 - LSASS Dumping
+
+For the third attack, I selected Atomic Red Team test number 1 under T1003.001. This test simulates LSASS memory dumping using ProcDump. Attackers often target lsass.exe because LSASS stores authentication-related information in memory.
+
+PowerShell Command:
+
+```powershell
+Invoke-AtomicTest T1003.001 -ShowDetailsBrief
+Invoke-AtomicTest T1003.001 -TestNumbers 1 -GetPrereqs
+Invoke-AtomicTest T1003.001 -TestNumbers 1
+```
+
+<img width="1917" height="1197" alt="test 3 1" src="https://github.com/user-attachments/assets/3748ccc2-95b4-492e-8f24-d85fa200e944" />
+<img width="1917" height="1197" alt="test 3 2" src="https://github.com/user-attachments/assets/66d89efd-fec6-45a9-bad5-310c1ce1e9b7" />
+
+
 
 ## Blue Team
 
@@ -270,6 +286,54 @@ Sysmon Event ID 1 was most helpful because it records newly created processes an
 The Splunk result showed MSHTA-related activity from the Windows Server. The output included time, host, Event ID, process name, and command line, confirming that the blue team was able to detect the T1218.005 defense evasion technique.
 
 <img width="1917" height="1197" alt="Detection 2" src="https://github.com/user-attachments/assets/65818bf7-ffbc-4957-83f6-2df3dbf294bf" />
+
+
+### Detection 3: T1003.001 (Credential Access) | LSASS Dumping
+
+After executing the Atomic Red Team test for `T1003.001`, I searched Splunk for LSASS dumping behavior. This test used ProcDump to dump the memory of `lsass.exe`. Since LSASS stores authentication-related information in memory, attackers commonly target it for credential access.
+
+The goal of this detection was to identify suspicious use of `procdump.exe` and command-line activity related to `lsass.exe`.
+
+#### SPL Query
+
+```spl
+index=win source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
+| rex field=_raw "<EventID[^>]*>(?<EventCode>\d+)</EventID>"
+| rex field=_raw "<Data Name='UtcTime'>(?<UtcTime>[^<]+)</Data>"
+| rex field=_raw "<Data Name='Image'>(?<Image>[^<]+)</Data>"
+| rex field=_raw "<Data Name='CommandLine'>(?<CommandLine>[^<]+)</Data>"
+| rex field=_raw "<Data Name='SourceImage'>(?<SourceImage>[^<]+)</Data>"
+| rex field=_raw "<Data Name='TargetImage'>(?<TargetImage>[^<]+)</Data>"
+| rex field=_raw "<Data Name='GrantedAccess'>(?<GrantedAccess>[^<]+)</Data>"
+| eval cmd=lower(coalesce(CommandLine,"")), image=lower(coalesce(Image,"")), source=lower(coalesce(SourceImage,"")), target=lower(coalesce(TargetImage,""))
+| where (EventCode="1" AND (like(image,"%procdump%") OR like(cmd,"%procdump%") OR like(cmd,"%lsass%"))) OR (EventCode="10" AND like(target,"%lsass.exe%"))
+| eval ProcessName=coalesce(Image,SourceImage)
+| table _time UtcTime host EventCode ProcessName CommandLine SourceImage TargetImage GrantedAccess
+
+```
+#### Detection Explanation
+
+The Splunk query searched the win index, where Windows Sysmon logs were forwarded. The query extracted important fields from the raw XML Sysmon logs, including EventCode, UtcTime, ProcessName, CommandLine, SourceImage, TargetImage, and GrantedAccess.
+
+In the detection result, Splunk showed command-line activity where procdump.exe was used against lsass.exe and created a dump file named lsass_dump.dmp. This is strong evidence of LSASS dumping behavior.
+
+Most Helpful Sysmon Event ID
+Sysmon Event ID 1 - Process Creation
+
+Sysmon Event ID 1 was most visible in my result because it captured the process execution and full command line. The command line clearly showed procdump.exe being used to dump lsass.exe.
+
+Sysmon Event ID 10 - Process Access
+
+Sysmon Event ID 10 is also very useful for LSASS dumping detection because it can show when one process accesses lsass.exe. However, in my screenshot, the clearest evidence came from Event ID 1 process creation logs.
+
+#### Result
+
+The Splunk result showed LSASS dumping activity from the Windows Server. The output included the event time, host name, Sysmon Event ID, process name, and command line. The command line showed procdump.exe being used to dump lsass.exe, confirming that the blue team was able to detect the T1003.001 credential access technique.
+
+<img width="1917" height="1197" alt="detection 3 on trial" src="https://github.com/user-attachments/assets/4a26caea-fa33-428f-afcc-1c1a92eb165c" />
+
+
+
 
 
 
