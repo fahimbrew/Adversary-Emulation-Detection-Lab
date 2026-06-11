@@ -148,6 +148,11 @@ index=main (Sysmon OR notepad.exe OR calc.exe OR whoami OR ipconfig)
 
 <img width="1917" height="1197" alt="nice two" src="https://github.com/user-attachments/assets/3889358b-6f64-4d57-8dc1-e15f375f171d" />
 
+#### Now I will install the Splunk Add-on for Sysmon.
+<img width="1917" height="1197" alt="Splunk Add-on for Sysmon install" src="https://github.com/user-attachments/assets/0f7e6576-c2b8-4527-9bd2-147116e8bc4f" />
+
+
+
 
 
 
