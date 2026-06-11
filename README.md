@@ -156,6 +156,8 @@ index=main (Sysmon OR notepad.exe OR calc.exe OR whoami OR ipconfig)
 <img width="1917" height="1197" alt="creating new index input on server" src="https://github.com/user-attachments/assets/79c11aaf-5f3d-416d-95df-235d7454513b" />
 
 
+##### Checked on Kali Machine
+<img width="1917" height="1197" alt="checked on Kali" src="https://github.com/user-attachments/assets/143570c8-ed91-4ddb-9b13-cefd06ea0029" />
 
 
 
