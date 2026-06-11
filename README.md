@@ -102,5 +102,25 @@ Check if the Sysmon is running or not.
 ### Splunk Universal Forwarder Installation:
 
 ##### At first, we have to again check the IP address and make sure that the Splunk Enterprise port is accessible from the Windows server. As I restarted my main machine, my IP address of Kali got changed to 192.168.214.130, and I have also checked from the Windows server if the port is accessible or not.
+
+
 <img width="1917" height="1197" alt="port checking" src="https://github.com/user-attachments/assets/d6ed5981-884a-4ffa-8f95-597be786f22c" />
+
+##### Now, we are ready to install the universal forwarder on our Windows server machine.
+<img width="1915" height="1197" alt="forwarder 1" src="https://github.com/user-attachments/assets/c681d0e5-d8c5-4adc-a33c-7b2fa5dd176e" />
+<img width="1917" height="1197" alt="forwarder 2" src="https://github.com/user-attachments/assets/eb0d1cfa-85e0-4c1c-8209-2aa62efcddd2" />
+<img width="1917" height="1197" alt="forwarder 3" src="https://github.com/user-attachments/assets/903f7228-627b-46a1-bb37-4477266842d1" />
+<img width="1917" height="1197" alt="forwarder 4" src="https://github.com/user-attachments/assets/5187b855-bc1d-4d7b-a27d-4811910569dd" />
+
+##### Now we'll check if the forwarder is active or not.
+<img width="1917" height="1197" alt="forwarder 5" src="https://github.com/user-attachments/assets/fe833cd4-61fe-4f84-b87f-b3934c194ce9" />
+
+
+
+
+
+
+
+
+
 
