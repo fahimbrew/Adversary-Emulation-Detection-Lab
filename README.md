@@ -1,3 +1,4 @@
+<img width="1917" height="1197" alt="nice two" src="https://github.com/user-attachments/assets/beee634f-11bb-458b-be6b-1d0ca4d649ee" />
 # Adversary-Emulation-Detection-Lab
 ## The Infrastructure Setup
 ### Lab Network Diagram :
@@ -144,9 +145,9 @@ SPL Query:
 ```spl
 index=main
 | stats count by host source sourcetype
+```
 
-
-
+<img width="1917" height="1197" alt="nice two" src="https://github.com/user-attachments/assets/3889358b-6f64-4d57-8dc1-e15f375f171d" />
 
 
 
