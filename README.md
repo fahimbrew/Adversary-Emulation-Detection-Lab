@@ -120,10 +120,7 @@ Check if the Sysmon is running or not.
 
 ##### Create inputs.conf inside "C:\Program Files\SplunkUniversalForwarder\etc\system\local"
 <img width="1917" height="1197" alt="create input conf" src="https://github.com/user-attachments/assets/3eca4bb1-bcab-4715-baa5-a87eb3f9b182" />
-###### [WinEventLog://Microsoft-Windows-Sysmon/Operational]
-###### disabled = 0
-###### index = main
-###### renderXml = true
+
 <img width="1917" height="1197" alt="inputs conf 2" src="https://github.com/user-attachments/assets/ec6dc989-8c16-4f65-8c86-f08b2430c689" />
 
 #### Restart Universal forwarder and then check the status
