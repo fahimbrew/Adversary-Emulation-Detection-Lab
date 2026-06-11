@@ -423,6 +423,76 @@ The Splunk result showed PowerShell-related activity from the Windows Server. Th
 <img width="1917" height="1197" alt="detection 4 on trial 2" src="https://github.com/user-attachments/assets/72cb0f54-1c9c-4806-9abb-8802a6654555" />
 
 
+### Detection 5: T1112 (Defense Evasion) | Registry Modification
+
+After executing the Atomic Red Team tests for `T1112`, I searched Splunk for registry modification and Windows Defender related configuration changes. The goal of this detection was to identify registry value changes, Defender notification changes, and tamper protection modification attempts from Sysmon logs.
+
+This detection focused on Sysmon registry events and process creation events related to `reg.exe`, `cmd.exe`, Windows Defender registry paths, notification settings, and tamper protection settings.
+
+#### SPL Query
+
+```spl
+index=win source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
+| rex field=_raw "<EventID[^>]*>(?<EventCode>\d+)</EventID>"
+| rex field=_raw "<Data Name='UtcTime'>(?<UtcTime>[^<]+)</Data>"
+| rex field=_raw "<Data Name='Image'>(?<ProcessName>[^<]+)</Data>"
+| rex field=_raw "<Data Name='CommandLine'>(?<CommandLine>[^<]+)</Data>"
+| rex field=_raw "<Data Name='TargetObject'>(?<RegistryPath>[^<]+)</Data>"
+| rex field=_raw "<Data Name='Details'>(?<Details>[^<]+)</Data>"
+| eval cmd=lower(coalesce(CommandLine,"")), proc=lower(coalesce(ProcessName,"")), reg=lower(coalesce(RegistryPath,"")), details=lower(coalesce(Details,""))
+| where EventCode IN ("1","12","13","14") AND (
+    like(cmd,"%defender%") OR like(cmd,"%notification%") OR like(cmd,"%tamper%") OR like(cmd,"%set-itemproperty%") OR like(cmd,"%new-itemproperty%") OR like(cmd,"%reg add%") OR
+    like(reg,"%defender%") OR like(reg,"%notification%") OR like(reg,"%tamper%") OR like(reg,"%security center%") OR
+    like(details,"%disable%") OR like(details,"%dword%")
+)
+| table _time UtcTime host EventCode ProcessName CommandLine RegistryPath Details
+```
+
+#### Detection Explanation
+
+The Splunk query searched the `win` index, where Windows Server Sysmon logs were forwarded. The query extracted important fields from the raw Sysmon XML logs, including `EventCode`, `UtcTime`, `ProcessName`, `CommandLine`, `RegistryPath`, and `Details`.
+
+The query searched for Defender and registry-related indicators such as:
+
+* `defender`
+* `notification`
+* `tamper`
+* `reg add`
+* `set-itemproperty`
+* `new-itemproperty`
+* `dword`
+* Defender-related registry paths
+
+In the detection result, Splunk showed registry modification activity involving Windows Defender settings. The results included commands such as `reg add` and registry values such as `TamperProtection`, `DisableNotifications`, and `Notification_Suppress`. This is useful evidence because attackers may modify registry values to weaken security settings or hide security notifications.
+
+This helped prove the required detection evidence: time of execution, process name, command line, registry path, and registry modification details.
+
+#### Most Helpful Sysmon Event ID
+
+```text
+Sysmon Event ID 13 - Registry Value Set
+```
+
+Sysmon Event ID 13 was the most helpful event because it records registry value modification. In this detection, Event ID 13 showed registry paths related to Windows Defender configuration changes.
+
+```text
+Sysmon Event ID 1 - Process Creation
+```
+
+Sysmon Event ID 1 was also useful because it captured the process and command line used to make the registry changes. In the result, processes such as `reg.exe` and `cmd.exe` were visible with command lines showing Defender-related registry modification.
+
+#### Result
+
+The Splunk result showed registry and Windows Defender related activity from the Windows Server. The output included event time, host name, Sysmon Event ID, process name, command line, registry path, and registry details.
+
+The result showed `reg.exe` and `cmd.exe` being used to modify Defender-related registry values such as `TamperProtection`, `DisableNotifications`, and `Notification_Suppress`. This confirms that the blue team was able to detect the `T1112` registry modification and defense evasion technique using Sysmon logs in Splunk.
+
+<img width="1917" height="1197" alt="detection 5 1 main" src="https://github.com/user-attachments/assets/34424520-2bfe-40f4-bf1e-55ee2d90c789" />
+<img width="1917" height="1197" alt="detection 5 2 main" src="https://github.com/user-attachments/assets/393d315a-56bb-4a97-b886-56005ee32109" />
+<img width="1917" height="1197" alt="detection 5 3 main" src="https://github.com/user-attachments/assets/671c627b-bb6e-402d-9301-d2c39037dbad" />
+
+Note: Test numbers 38 and 51 completed successfully with exit code `0`. Test number 56 returned `Access is denied` with exit code `1`, meaning the tamper protection modification was attempted but blocked by system protection or permissions. The attempted command still generated useful logs for blue team detection.
+
 
 
 
