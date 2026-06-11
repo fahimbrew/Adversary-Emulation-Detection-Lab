@@ -317,6 +317,8 @@ The Splunk result showed scheduled task-related activity from the Windows Server
 
 After executing the Atomic Red Team test for T1218.005, I searched Splunk for suspicious MSHTA execution. The detection focused on mshta.exe, HTA file execution, and script-related command-line activity.
 
+#### SPL Query
+
 ```spl
 index=win source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
 | rex field=_raw "<EventID[^>]*>(?<EventCode>\d+)</EventID>"
