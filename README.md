@@ -186,12 +186,18 @@ For the first attack, I selected Atomic Red Team test number 8 under T1053.005. 
 PowerShell Command:
 
 ```powershell
+Invoke-AtomicTest T1053.005 -showDetailsBrief
 Invoke-AtomicTest T1053.005 -TestNumbers 8 -GetPrereqs
 Invoke-AtomicTest T1053.005 -TestNumbers 8
 ```
 
 <img width="1917" height="1197" alt="Test 1 (1)" src="https://github.com/user-attachments/assets/a7123797-4705-463c-90af-b8743ab581d1" />
 
+### Attack 2: T1218.005 - MSHTA
+
+For the second attack, I selected the Atomic Red Team test number 3 under T1218.005. This technique abuses mshta.exe, which is a legitimate Microsoft-signed Windows binary used to execute HTML Application files. Attackers can abuse MSHTA to execute malicious scripts or remote .hta files while bypassing some application control mechanisms.
+
+<img width="1917" height="1197" alt="Test 2" src="https://github.com/user-attachments/assets/6396729e-77db-40db-8998-f2ca10d9c9ea" />
 
 
 
