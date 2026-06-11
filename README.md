@@ -180,6 +180,17 @@ During Atomic Red Team setup, Windows Defender detected some Atomic Red Team com
 
 ### (1) T1053.005 (Persistence) | Scheduled Task: Create a task that runs a hidden script every minute.
 
+### Attack 1: T1053.005 - Scheduled Task
+
+For the first attack, I selected Atomic Red Team test number 8 under T1053.005. This test imports an XML scheduled task with a hidden attribute. Attackers use scheduled tasks to maintain persistence because the task can run automatically at a defined time or trigger.
+
+PowerShell Command:
+
+```powershell
+Invoke-AtomicTest T1053.005 -TestNumbers 8 -GetPrereqs
+Invoke-AtomicTest T1053.005 -TestNumbers 8
+```
+
 <img width="1917" height="1197" alt="Test 1 (1)" src="https://github.com/user-attachments/assets/a7123797-4705-463c-90af-b8743ab581d1" />
 
 
