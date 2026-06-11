@@ -184,6 +184,15 @@ During Atomic Red Team setup, Windows Defender detected some Atomic Red Team com
 
 
 
+## Blue Team
+
+### 1. T1053.005 (Persistence) | Scheduled Task
+
+
+
+
+
+
 
 
 
