@@ -178,7 +178,6 @@ During Atomic Red Team setup, Windows Defender detected some Atomic Red Team com
 
 ## Red Team Attack
 
-### (1) T1053.005 (Persistence) | Scheduled Task: Create a task that runs a hidden script every minute.
 
 ### Attack 1: T1053.005 - Scheduled Task
 
@@ -198,7 +197,49 @@ Invoke-AtomicTest T1053.005 -TestNumbers 8
 
 ## Blue Team
 
-### 1. T1053.005 (Persistence) | Scheduled Task
+### Detection 1: T1053.005 (Persistence) | Scheduled Task
+
+After executing the Atomic Red Team test for `T1053.005`, I started the blue team detection phase in Splunk. The goal of this detection was to identify scheduled task creation behavior from Windows Sysmon logs.
+
+This attack was detected by searching for Task Scheduler-related activity, especially `schtasks.exe`, `Task Scheduler`, `Schedule.Service`, and hidden scheduled task behavior. These indicators are useful because attackers commonly use scheduled tasks to maintain persistence on a compromised Windows system.
+
+#### SPL Query
+
+```spl
+index=win source="WinEventLog:Microsoft-Windows-Sysmon/Operational" ("schtasks.exe" OR "Task Scheduler" OR "Schedule.Service" OR "Hidden")
+| rex field=_raw "<EventID[^>]*>(?<EventCode>\d+)</EventID>"
+| rex field=_raw "<Data Name='UtcTime'>(?<UtcTime>[^<]+)</Data>"
+| rex field=_raw "<Data Name='Image'>(?<ProcessName>[^<]+)</Data>"
+| rex field=_raw "<Data Name='CommandLine'>(?<CommandLine>[^<]+)</Data>"
+| table _time UtcTime host EventCode ProcessName CommandLine
+```
+
+#### Detection Explanation
+
+The Splunk query searched the `win` index, where Windows Server Sysmon logs were forwarded. I filtered the Sysmon Operational logs for scheduled task related indicators such as `schtasks.exe`, `Task Scheduler`, and `Schedule.Service`.
+
+The query extracted important fields from the raw XML log, including:
+
+* `EventCode`
+* `UtcTime`
+* `ProcessName`
+* `CommandLine`
+
+This helped prove the required detection evidence: the time of execution, the process involved, and the command line used during the scheduled task activity.
+
+#### Most Helpful Sysmon Event ID
+
+The most helpful Sysmon Event ID for this detection was:
+
+```text
+Sysmon Event ID 1 - Process Creation
+```
+
+Sysmon Event ID 1 was useful because it records newly created processes along with the full command line. This allowed me to identify the scheduled task creation behavior and confirm that the Atomic Red Team test generated observable Windows activity.
+
+#### Result
+
+The Splunk result showed scheduled task-related activity from the Windows Server. The detection output included the event time, host name, Sysmon Event ID, process name, and command line. This confirms that the blue team was able to detect the `T1053.005` persistence technique using Sysmon logs in Splunk.
 
 <img width="1917" height="1197" alt="Detection 1" src="https://github.com/user-attachments/assets/6931e232-686b-4566-8ae6-faef12db3664" />
 
